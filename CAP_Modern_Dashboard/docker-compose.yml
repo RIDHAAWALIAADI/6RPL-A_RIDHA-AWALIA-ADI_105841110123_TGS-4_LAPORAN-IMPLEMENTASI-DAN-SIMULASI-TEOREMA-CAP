@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: mysql_cap
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: minimarket
+    ports:
+      - "3307:3306"
+
+  flask:
+    build: ./backend
+    container_name: flask_cap
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mysql
+
+  frontend:
+    build: ./frontend
+    container_name: dashboard_cap
+    ports:
+      - "8080:80"
+    depends_on:
+      - flask
